@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <title> Posts </title>
+
+</head>
+
+
+<body>
+    
+    <script type = "text/javascript">
+
+        function getPost(){
+
+            var http = new XMLHttpRequest();
+            var url = '/getpost';
+
+            //var params ='topic=' + document.getElementById("topic_input").value + '&data=' + document.getElementById("data_input").value;
+       
+            http.open('GET', url, true);
+
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            http.onreadystatechange = function() { 
+
+                if(http.readyState == 4 && http.status == 200) {
+             
+                    //var response = JSON.parse(http.responseText);
+
+                    console.log(http.responseText);
+    
+                    //document.getElementById("answer").value = response;
+                    //document.getElementById("answer").value = http.responseText;
+
+                }
+            };
+
+            http.send();
+
+        };
+
+        function makePost(){
+
+            var http = new XMLHttpRequest();
+            var url = '/postmessage';
+
+            var params ='topic=' + document.getElementById("topic_input").value + '&data=' + document.getElementById("data_input").value;
+       
+            http.open('POST', url, true);
+
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            http.onreadystatechange = function() { 
+
+                if(http.readyState == 4 && http.status == 200) {
+             
+                    //var response = JSON.parse(http.responseText);
+
+                    //console.log(http.responseText);
+    
+                    //document.getElementById("answer").value = response;
+                    //document.getElementById("answer").value = http.responseText;
+
+                }
+            };
+
+            http.send(params);};
+
+
+            getPost();
+
+
+
+    </script>
+
+
+    <label for="topic"> TOPIC: </label>  <br/>
+    <input id="topic_input" type="text" name="topic" value="enter the topic here">  </input> <br/>
+
+    <label for="data"> DATA: </label>  <br/>
+    <input id="data_input" type="text" name="data" value="enter the data here">  </input> <br/>
+
+    <button onclick="makePost()"> SUBMIT </button>
+
+    <textarea id="answer"> </textarea>
+
+
+</body>
+
+</html>
