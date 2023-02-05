@@ -22,8 +22,6 @@ app.get('/', (req, res) => {
 })
 
 
-
-
 app.get('/getpost', (req,res) => {
 
 
@@ -34,7 +32,6 @@ app.get('/getpost', (req,res) => {
           return;
         }
         res.send(data);
-
       });
 });
 
@@ -42,44 +39,78 @@ app.get('/getpost', (req,res) => {
 
 
 
-app.post('/postmessage', (req,res) => {
+// app.post('/postmessage', (req,res) => {
 
-    var topic = req.body.topic;
-    var data = req.body.data;
+//     const timestamp = new Date().toLocaleString();
+
+//     var obj_data = new Object();
+//     obj_data.topic = req.body.topic;;
+//     obj_data.data = req.body.data;
+//     obj_data.timestamp = timestamp;
+
+//     //const post = `${timestamp} | Topic: ${topic} | Data: ${data}\n`;
+
+//     var json_data = JSON.stringify(obj_data);
+
+
+//     fs.appendFile('pages/posts.txt', json_data , err => {
+
+//         if (err) {
+//             console.error(err)
+//             res.send(err);
+//             return
+//         }
+//         res.send("POSTED SUCCESFULLY");
+//     });
+// });
+
+
+app.post('/postmessage', (req, res) => {
+
     const timestamp = new Date().toLocaleString();
-
-    console.log(topic);
-    console.log(data);
-    console.log(timestamp);
-
-    var obj_data = new Object();
-    obj_data.topic = topic;
-    obj_data.data = data;
-    obj_data.timestamp = timestamp;
-
-    const post = `${timestamp} | Topic: ${topic} | Data: ${data}\n`;
-
-    var json_data = JSON.stringify(obj_data);
+    const topic = req.body.topic;
+    const data = req.body.data;
 
 
-    fs.appendFile('pages/posts.txt', json_data , err => {
+    const filePath = 'pages/posts.txt';
 
-        if (err) {
-            console.error(err)
-            return
+
+    // make the file if doesnt exists and use json format
+    if (!fs.existsSync(filePath)) {
+        fs.writeFile(filePath, '[]', 'utf-8', (writeErr) => {
+            if (writeErr) {
+                console.error(writeErr);
+                return res.send(writeErr);
+            }
+        });
+    }
+
+
+    // get the data from file
+    fs.readFile(filePath, 'utf-8', (readErr, fileContents) => {
+
+        let existingData = [];
+        try {
+            existingData = JSON.parse(fileContents);   // existing data in json format
+        } catch (parseErr) {
+            console.error(parseErr);
         }
-        //res.send("FILE MADE");
+
+        // append the data to list ensuring json validated format
+        existingData.push({ topic, data, timestamp });
+        const updatedData = JSON.stringify(existingData);
+
+
+        // append the data to file
+        fs.writeFile(filePath, updatedData, 'utf-8', (writeErr) => {
+            if (writeErr) {
+                console.error(writeErr);
+                return res.send(writeErr);
+            }
+
+            return res.send('POSTED SUCCESSFULLY');
+        });
     });
-
-    fs.readFile('pages/posts.txt', 'utf-8', (err, data) => {
-
-        if (err) {
-          console.error(err);
-          return;
-        }
-        res.send(data);
-
-      });
 });
 
 

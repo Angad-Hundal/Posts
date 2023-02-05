@@ -17,8 +17,6 @@
 
             var http = new XMLHttpRequest();
             var url = '/getpost';
-
-            //var params ='topic=' + document.getElementById("topic_input").value + '&data=' + document.getElementById("data_input").value;
        
             http.open('GET', url, true);
 
@@ -27,13 +25,33 @@
             http.onreadystatechange = function() { 
 
                 if(http.readyState == 4 && http.status == 200) {
-             
-                    //var response = JSON.parse(http.responseText);
 
-                    console.log(http.responseText);
-    
-                    //document.getElementById("answer").value = response;
-                    //document.getElementById("answer").value = http.responseText;
+
+                    var allPosts = http.responseText;
+
+                    var obj = JSON.parse(allPosts);  // dict with one value and key is rows
+                    //array_of_dict = obj["rows"]      // array of dict
+                    array_of_dict = obj;
+
+
+                    table = document.getElementById("table");
+                    t_row = 1
+
+
+                    for (var i = 0; i < array_of_dict.length; i++) {
+
+
+                        table.rows[t_row].cells[0].innerHTML = temp_id = array_of_dict[i]["topic"]
+                        table.rows[t_row].cells[1].innerHTML = temp_id = array_of_dict[i]["data"]
+                        table.rows[t_row].cells[2].innerHTML = temp_id = array_of_dict[i]["timestamp"]
+
+                        t_row = t_row + 1;
+
+                        var newRow = table.insertRow(table.length);
+
+                        var cell0 = newRow.insertCell(0);
+                        var cell1 = newRow.insertCell(1);
+                        var cell2 = newRow.insertCell(2);}
 
                 }
             };
@@ -56,36 +74,51 @@
             http.onreadystatechange = function() { 
 
                 if(http.readyState == 4 && http.status == 200) {
-             
-                    //var response = JSON.parse(http.responseText);
-
-                    //console.log(http.responseText);
-    
-                    //document.getElementById("answer").value = response;
-                    //document.getElementById("answer").value = http.responseText;
-
+            
+                    alert(http.responseText);
+                   
                 }
+            
             };
 
             http.send(params);};
 
 
             getPost();
+            //setInterval(getPost, 1000);
 
 
 
     </script>
 
 
-    <label for="topic"> TOPIC: </label>  <br/>
-    <input id="topic_input" type="text" name="topic" value="enter the topic here">  </input> <br/>
+    <label for="topic"> TOPIC: </label> 
+    <input id="topic_input" type="text" name="topic" value="enter the topic here">  </input> <br></br>
 
-    <label for="data"> DATA: </label>  <br/>
-    <input id="data_input" type="text" name="data" value="enter the data here">  </input> <br/>
+    <label for="data"> DATA: </label>
+    <input id="data_input" type="text" name="data" value="enter the data here">  </input> <br></br>
 
     <button onclick="makePost()"> SUBMIT </button>
+    <br></br>
 
-    <textarea id="answer"> </textarea>
+
+    <table id="table" border="2" class="styled-table">
+
+        <!-- ROW 0 That is the heading -->
+        <tr id="ttr">
+            <th>TOPIC</th>
+            <th>DATA</th>
+            <th>TIMESTAMP</th>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+
+    </table>
 
 
 </body>
