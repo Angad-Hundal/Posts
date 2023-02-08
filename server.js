@@ -75,7 +75,7 @@ app.post('/postmessage', (req, res) => {
     const filePath = 'pages/posts.txt';
 
 
-    // make the file if doesnt exists and use json format
+    // make the file if doesnt exists and make it ready to put data in JSON format
     if (!fs.existsSync(filePath)) {
         fs.writeFile(filePath, '[]', 'utf-8', (writeErr) => {
             if (writeErr) {
@@ -114,10 +114,7 @@ app.post('/postmessage', (req, res) => {
 });
 
 
-
-
 app.use('/', express.static('pages'));
-
 
 
 app.listen(PORT, HOST);

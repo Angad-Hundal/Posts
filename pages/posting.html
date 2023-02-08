@@ -30,7 +30,6 @@
                     var allPosts = http.responseText;
 
                     var obj = JSON.parse(allPosts);  // dict with one value and key is rows
-                    //array_of_dict = obj["rows"]      // array of dict
                     array_of_dict = obj;
 
 
@@ -75,17 +74,14 @@
 
                 if(http.readyState == 4 && http.status == 200) {
             
-                    alert(http.responseText);
-                   
+                    alert(http.responseText);  
                 }
-            
             };
 
             http.send(params);};
 
 
             getPost();
-            //setInterval(getPost, 1000);
 
 
 
